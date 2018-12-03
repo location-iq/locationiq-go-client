@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   description: LocationIQ provides flexible enterprise-grade location based solutions. We work with developers, startups and enterprises worldwide serving billions of requests everyday. This page provides an overview of the technical aspects of our API and will help you get started.
   title: LocationIQ
-  version: 1.0.0
+  version: 1.0.1
 servers:
 - url: https://eu1.locationiq.com/v1
 paths:
@@ -12,7 +12,7 @@ paths:
       operationId: search
       parameters:
       - description: Address to geocode
-        example: Empire state building
+        example: '"Empire state building"'
         explode: true
         in: query
         name: q
@@ -21,7 +21,7 @@ paths:
           type: string
         style: form
       - description: Format to geocode. Only JSON supported for SDKs
-        example: json
+        example: '"json"'
         explode: true
         in: query
         name: format
@@ -57,7 +57,7 @@ paths:
           type: integer
         style: form
       - description: The preferred area to find search results.  To restrict results to those within the viewbox, use along with the bounded option.
-        example: -132.84908,47.69382,-70.44674,30.82531
+        example: '"-132.84908,47.69382,-70.44674,30.82531"'
         explode: true
         in: query
         name: viewbox
@@ -90,7 +90,7 @@ paths:
           type: integer
         style: form
       - description: Preferred language order for showing search results, overrides the value specified in the Accept-Language HTTP header. Defaults to en. To use native language for the response when available, use accept-language=native
-        example: en
+        example: '"en"'
         explode: true
         in: query
         name: accept-language
@@ -99,7 +99,7 @@ paths:
           type: string
         style: form
       - description: Limit search to a list of countries.
-        example: US
+        example: '"us"'
         explode: true
         in: query
         name: countrycodes
@@ -325,7 +325,7 @@ paths:
           type: number
         style: form
       - description: Format to geocode. Only JSON supported for SDKs
-        example: json
+        example: '"json"'
         explode: true
         in: query
         name: format
@@ -362,7 +362,7 @@ paths:
           type: integer
         style: form
       - description: Preferred language order for showing search results, overrides the value specified in the Accept-Language HTTP header. Defaults to en. To use native language for the response when available, use accept-language=native
-        example: en
+        example: '"en"'
         explode: true
         in: query
         name: accept-language
