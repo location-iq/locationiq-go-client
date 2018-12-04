@@ -11,4 +11,5 @@ package locationiq
 
 type Daybalance struct {
 	Day int32 `json:"day,omitempty"`
+	Bonus int32 `json:"bonus,omitempty"`
 }

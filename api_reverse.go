@@ -38,6 +38,7 @@ Reverse geocoding is the process of converting a coordinate or location (latitud
  * @param "AcceptLanguage" (optional.String) -  Preferred language order for showing search results, overrides the value specified in the Accept-Language HTTP header. Defaults to en. To use native language for the response when available, use accept-language=native
  * @param "Namedetails" (optional.Int32) -  Include a list of alternative names in the results. These may include language variants, references, operator and brand.
  * @param "Extratags" (optional.Int32) -  Include additional information in the result if available, e.g. wikipedia link, opening hours.
+ * @param "Statecode" (optional.Int32) -  Adds state or province code when available to the statecode key inside the address element. Currently supported for addresses in the USA, Canada and Australia. Defaults to 0
 @return Location
 */
 
@@ -46,6 +47,7 @@ type ReverseOpts struct {
     AcceptLanguage optional.String
     Namedetails optional.Int32
     Extratags optional.Int32
+    Statecode optional.Int32
 }
 
 func (a *ReverseApiService) Reverse(ctx context.Context, lat float32, lon float32, format string, normalizecity int32, localVarOptionals *ReverseOpts) (Location, *http.Response, error) {
@@ -92,6 +94,9 @@ func (a *ReverseApiService) Reverse(ctx context.Context, lat float32, lon float3
 	}
 	if localVarOptionals != nil && localVarOptionals.Extratags.IsSet() {
 		localVarQueryParams.Add("extratags", parameterToString(localVarOptionals.Extratags.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Statecode.IsSet() {
+		localVarQueryParams.Add("statecode", parameterToString(localVarOptionals.Statecode.Value(), ""))
 	}
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{}
