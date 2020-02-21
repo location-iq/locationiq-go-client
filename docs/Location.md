@@ -1,8 +1,10 @@
 # Location
 
 ## Properties
+
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**Distance** | **float32** |  | [optional] 
 **PlaceId** | **string** |  | [optional] 
 **Licence** | **string** |  | [optional] 
 **OsmType** | **string** |  | [optional] 
@@ -16,6 +18,7 @@ Name | Type | Description | Notes
 **Importance** | **float32** |  | [optional] 
 **Address** | [**Address**](address.md) |  | [optional] 
 **Namedetails** | [**Namedetails**](namedetails.md) |  | [optional] 
+**Matchquality** | [**Matchquality**](matchquality.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

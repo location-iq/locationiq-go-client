@@ -22,90 +22,69 @@ var (
 	_ _context.Context
 )
 
-// ReverseApiService ReverseApi service
-type ReverseApiService service
+// AutocompleteApiService AutocompleteApi service
+type AutocompleteApiService service
 
-// ReverseOpts Optional parameters for the method 'Reverse'
-type ReverseOpts struct {
-    Addressdetails optional.Int32
+// AutocompleteOpts Optional parameters for the method 'Autocomplete'
+type AutocompleteOpts struct {
+    Limit optional.Int32
+    Viewbox optional.String
+    Bounded optional.Int32
+    Countrycodes optional.String
     AcceptLanguage optional.String
-    Namedetails optional.Int32
-    Extratags optional.Int32
-    Statecode optional.Int32
-    Showdistance optional.Int32
-    Postaladdress optional.Int32
+    Tag optional.String
 }
 
 /*
-Reverse Reverse Geocoding
-Reverse geocoding is the process of converting a coordinate or location (latitude, longitude) to a readable address or place name. This permits the identification of nearby street addresses, places, and/or area subdivisions such as a neighborhood, county, state, or country.
+Autocomplete Method for Autocomplete
+The Autocomplete API is a variant of the Search API that returns place predictions in response to an HTTP request.  The request specifies a textual search string and optional geographic bounds.  The service can be used to provide autocomplete functionality for text-based geographic searches, by returning places such as businesses, addresses and points of interest as a user types. The Autocomplete API can match on full words as well as substrings. Applications can therefore send queries as the user types, to provide on-the-fly place predictions.
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param lat Latitude of the location to generate an address for.
- * @param lon Longitude of the location to generate an address for.
- * @param format Format to geocode. Only JSON supported for SDKs
- * @param normalizecity Normalizes village to city level data to city
- * @param optional nil or *ReverseOpts - Optional Parameters:
- * @param "Addressdetails" (optional.Int32) -  Include a breakdown of the address into elements. Defaults to 1.
+ * @param q Address to geocode
+ * @param normalizecity For responses with no city value in the address section, the next available element in this order - city_district, locality, town, borough, municipality, village, hamlet, quarter, neighbourhood - from the address section will be normalized to city. Defaults to 1 for SDKs.
+ * @param optional nil or *AutocompleteOpts - Optional Parameters:
+ * @param "Limit" (optional.Int32) -  Limit the number of returned results. Default is 10.
+ * @param "Viewbox" (optional.String) -  The preferred area to find search results.  To restrict results to those within the viewbox, use along with the bounded option. Tuple of 4 floats. Any two corner points of the box - `max_lon,max_lat,min_lon,min_lat` or `min_lon,min_lat,max_lon,max_lat` - are accepted in any order as long as they span a real box. 
+ * @param "Bounded" (optional.Int32) -  Restrict the results to only items contained with the viewbox
+ * @param "Countrycodes" (optional.String) -  Limit search to a list of countries.
  * @param "AcceptLanguage" (optional.String) -  Preferred language order for showing search results, overrides the value specified in the Accept-Language HTTP header. Defaults to en. To use native language for the response when available, use accept-language=native
- * @param "Namedetails" (optional.Int32) -  Include a list of alternative names in the results. These may include language variants, references, operator and brand.
- * @param "Extratags" (optional.Int32) -  Include additional information in the result if available, e.g. wikipedia link, opening hours.
- * @param "Statecode" (optional.Int32) -  Adds state or province code when available to the statecode key inside the address element. Currently supported for addresses in the USA, Canada and Australia. Defaults to 0
- * @param "Showdistance" (optional.Int32) -  Returns the straight line distance (meters) between the input location and the result's location. Value is set in the distance key of the response. Defaults to 0 [0,1]
- * @param "Postaladdress" (optional.Int32) -  Returns address inside the postaladdress key, that is specifically formatted for each country. Currently supported for addresses in Germany. Defaults to 0 [0,1]
-@return Location
+ * @param "Tag" (optional.String) -  Restricts the autocomplete search results to elements of specific OSM class and type.  Example - To restrict results to only class place and type city: tag=place:city, To restrict the results to all of OSM class place: tag=place
+@return []map[string]interface{}
 */
-func (a *ReverseApiService) Reverse(ctx _context.Context, lat float32, lon float32, format string, normalizecity int32, localVarOptionals *ReverseOpts) (Location, *_nethttp.Response, error) {
+func (a *AutocompleteApiService) Autocomplete(ctx _context.Context, q string, normalizecity int32, localVarOptionals *AutocompleteOpts) ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		localVarReturnValue  Location
+		localVarReturnValue  []map[string]interface{}
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/reverse.php"
+	localVarPath := a.client.cfg.BasePath + "/autocomplete.php"
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	if lat < -90 {
-		return localVarReturnValue, nil, reportError("lat must be greater than -90")
-	}
-	if lat > 90 {
-		return localVarReturnValue, nil, reportError("lat must be less than 90")
-	}
-	if lon < -180 {
-		return localVarReturnValue, nil, reportError("lon must be greater than -180")
-	}
-	if lon > 180 {
-		return localVarReturnValue, nil, reportError("lon must be less than 180")
-	}
 
-	localVarQueryParams.Add("lat", parameterToString(lat, ""))
-	localVarQueryParams.Add("lon", parameterToString(lon, ""))
-	localVarQueryParams.Add("format", parameterToString(format, ""))
-	localVarQueryParams.Add("normalizecity", parameterToString(normalizecity, ""))
-	if localVarOptionals != nil && localVarOptionals.Addressdetails.IsSet() {
-		localVarQueryParams.Add("addressdetails", parameterToString(localVarOptionals.Addressdetails.Value(), ""))
+	localVarQueryParams.Add("q", parameterToString(q, ""))
+	if localVarOptionals != nil && localVarOptionals.Limit.IsSet() {
+		localVarQueryParams.Add("limit", parameterToString(localVarOptionals.Limit.Value(), ""))
 	}
+	if localVarOptionals != nil && localVarOptionals.Viewbox.IsSet() {
+		localVarQueryParams.Add("viewbox", parameterToString(localVarOptionals.Viewbox.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Bounded.IsSet() {
+		localVarQueryParams.Add("bounded", parameterToString(localVarOptionals.Bounded.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Countrycodes.IsSet() {
+		localVarQueryParams.Add("countrycodes", parameterToString(localVarOptionals.Countrycodes.Value(), ""))
+	}
+	localVarQueryParams.Add("normalizecity", parameterToString(normalizecity, ""))
 	if localVarOptionals != nil && localVarOptionals.AcceptLanguage.IsSet() {
 		localVarQueryParams.Add("accept-language", parameterToString(localVarOptionals.AcceptLanguage.Value(), ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.Namedetails.IsSet() {
-		localVarQueryParams.Add("namedetails", parameterToString(localVarOptionals.Namedetails.Value(), ""))
-	}
-	if localVarOptionals != nil && localVarOptionals.Extratags.IsSet() {
-		localVarQueryParams.Add("extratags", parameterToString(localVarOptionals.Extratags.Value(), ""))
-	}
-	if localVarOptionals != nil && localVarOptionals.Statecode.IsSet() {
-		localVarQueryParams.Add("statecode", parameterToString(localVarOptionals.Statecode.Value(), ""))
-	}
-	if localVarOptionals != nil && localVarOptionals.Showdistance.IsSet() {
-		localVarQueryParams.Add("showdistance", parameterToString(localVarOptionals.Showdistance.Value(), ""))
-	}
-	if localVarOptionals != nil && localVarOptionals.Postaladdress.IsSet() {
-		localVarQueryParams.Add("postaladdress", parameterToString(localVarOptionals.Postaladdress.Value(), ""))
+	if localVarOptionals != nil && localVarOptionals.Tag.IsSet() {
+		localVarQueryParams.Add("tag", parameterToString(localVarOptionals.Tag.Value(), ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -158,7 +137,7 @@ func (a *ReverseApiService) Reverse(ctx _context.Context, lat float32, lon float
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
-			var v Location
+			var v []map[string]interface{}
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()

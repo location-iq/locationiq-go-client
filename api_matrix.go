@@ -14,6 +14,7 @@ import (
 	_ioutil "io/ioutil"
 	_nethttp "net/http"
 	_neturl "net/url"
+	"strings"
 	"github.com/antihax/optional"
 )
 
@@ -22,90 +23,88 @@ var (
 	_ _context.Context
 )
 
-// ReverseApiService ReverseApi service
-type ReverseApiService service
+// MatrixApiService MatrixApi service
+type MatrixApiService service
 
-// ReverseOpts Optional parameters for the method 'Reverse'
-type ReverseOpts struct {
-    Addressdetails optional.Int32
-    AcceptLanguage optional.String
-    Namedetails optional.Int32
-    Extratags optional.Int32
-    Statecode optional.Int32
-    Showdistance optional.Int32
-    Postaladdress optional.Int32
+// MatrixOpts Optional parameters for the method 'Matrix'
+type MatrixOpts struct {
+    Bearings optional.String
+    Radiuses optional.String
+    GenerateHints optional.String
+    Approaches optional.String
+    Exclude optional.String
+    Annotations optional.String
+    Sources optional.Int32
+    Destinations optional.Int32
+    FallbackSpeed optional.Float32
+    FallbackCoordinate optional.String
 }
 
 /*
-Reverse Reverse Geocoding
-Reverse geocoding is the process of converting a coordinate or location (latitude, longitude) to a readable address or place name. This permits the identification of nearby street addresses, places, and/or area subdivisions such as a neighborhood, county, state, or country.
+Matrix Matrix Service
+Computes duration of the fastest route between all pairs of supplied coordinates. Returns the durations or distances or both between the coordinate pairs. Note that the distances are not the shortest distance between two coordinates, but rather the distances of the fastest routes.
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param lat Latitude of the location to generate an address for.
- * @param lon Longitude of the location to generate an address for.
- * @param format Format to geocode. Only JSON supported for SDKs
- * @param normalizecity Normalizes village to city level data to city
- * @param optional nil or *ReverseOpts - Optional Parameters:
- * @param "Addressdetails" (optional.Int32) -  Include a breakdown of the address into elements. Defaults to 1.
- * @param "AcceptLanguage" (optional.String) -  Preferred language order for showing search results, overrides the value specified in the Accept-Language HTTP header. Defaults to en. To use native language for the response when available, use accept-language=native
- * @param "Namedetails" (optional.Int32) -  Include a list of alternative names in the results. These may include language variants, references, operator and brand.
- * @param "Extratags" (optional.Int32) -  Include additional information in the result if available, e.g. wikipedia link, opening hours.
- * @param "Statecode" (optional.Int32) -  Adds state or province code when available to the statecode key inside the address element. Currently supported for addresses in the USA, Canada and Australia. Defaults to 0
- * @param "Showdistance" (optional.Int32) -  Returns the straight line distance (meters) between the input location and the result's location. Value is set in the distance key of the response. Defaults to 0 [0,1]
- * @param "Postaladdress" (optional.Int32) -  Returns address inside the postaladdress key, that is specifically formatted for each country. Currently supported for addresses in Germany. Defaults to 0 [0,1]
-@return Location
+ * @param coordinates String of format {longitude},{latitude};{longitude},{latitude}[;{longitude},{latitude} ...] or polyline({polyline}) or polyline6({polyline6}). polyline follows Google's polyline format with precision 5
+ * @param optional nil or *MatrixOpts - Optional Parameters:
+ * @param "Bearings" (optional.String) -  Limits the search to segments with given bearing in degrees towards true north in clockwise direction. List of positive integer pairs separated by semi-colon and bearings array should be equal to length of coordinate array. Input Value :- {bearing};{bearing}[;{bearing} ...] Bearing follows the following format : bearing {value},{range} integer 0 .. 360,integer 0 .. 180
+ * @param "Radiuses" (optional.String) -  Limits the search to given radius in meters Radiuses array length should be same as coordinates array, eaach value separated by semi-colon. Input Value - {radius};{radius}[;{radius} ...] Radius has following format :- double >= 0 or unlimited (default)
+ * @param "GenerateHints" (optional.String) -  Adds a Hint to the response which can be used in subsequent requests, see hints parameter. Input Value - true (default), false Format - Base64 String
+ * @param "Approaches" (optional.String) -  Keep waypoints on curb side. Input Value - {approach};{approach}[;{approach} ...] Format - curb or unrestricted (default)
+ * @param "Exclude" (optional.String) -  Additive list of classes to avoid, order does not matter. input Value - {class}[,{class}] Format - A class name determined by the profile or none.
+ * @param "Annotations" (optional.String) -  Returns additional metadata for each coordinate along the route geometry.  [ true, false (default), nodes, distance, duration, datasources, weight, speed ]
+ * @param "Sources" (optional.Int32) -  Use location with given index as source. [ {index};{index}[;{index} ...] or all (default) ] => index  0 <= integer < #locations
+ * @param "Destinations" (optional.Int32) -  Use location with given index as destination. [ {index};{index}[;{index} ...] or all (default) ]
+ * @param "FallbackSpeed" (optional.Float32) -  If no route found between a source/destination pair, calculate the as-the-crow-flies distance,  then use this speed to estimate duration. double > 0
+ * @param "FallbackCoordinate" (optional.String) -  When using a fallback_speed, use the user-supplied coordinate (input), or the snapped location (snapped) for calculating distances. [ input (default), or snapped ]
+@return DirectionsMatrix
 */
-func (a *ReverseApiService) Reverse(ctx _context.Context, lat float32, lon float32, format string, normalizecity int32, localVarOptionals *ReverseOpts) (Location, *_nethttp.Response, error) {
+func (a *MatrixApiService) Matrix(ctx _context.Context, coordinates string, localVarOptionals *MatrixOpts) (DirectionsMatrix, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		localVarReturnValue  Location
+		localVarReturnValue  DirectionsMatrix
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/reverse.php"
+	localVarPath := a.client.cfg.BasePath + "/matrix/driving/{coordinates}"
+	localVarPath = strings.Replace(localVarPath, "{"+"coordinates"+"}", _neturl.QueryEscape(parameterToString(coordinates, "")) , -1)
+
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	if lat < -90 {
-		return localVarReturnValue, nil, reportError("lat must be greater than -90")
-	}
-	if lat > 90 {
-		return localVarReturnValue, nil, reportError("lat must be less than 90")
-	}
-	if lon < -180 {
-		return localVarReturnValue, nil, reportError("lon must be greater than -180")
-	}
-	if lon > 180 {
-		return localVarReturnValue, nil, reportError("lon must be less than 180")
-	}
 
-	localVarQueryParams.Add("lat", parameterToString(lat, ""))
-	localVarQueryParams.Add("lon", parameterToString(lon, ""))
-	localVarQueryParams.Add("format", parameterToString(format, ""))
-	localVarQueryParams.Add("normalizecity", parameterToString(normalizecity, ""))
-	if localVarOptionals != nil && localVarOptionals.Addressdetails.IsSet() {
-		localVarQueryParams.Add("addressdetails", parameterToString(localVarOptionals.Addressdetails.Value(), ""))
+	if localVarOptionals != nil && localVarOptionals.Bearings.IsSet() {
+		localVarQueryParams.Add("bearings", parameterToString(localVarOptionals.Bearings.Value(), ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.AcceptLanguage.IsSet() {
-		localVarQueryParams.Add("accept-language", parameterToString(localVarOptionals.AcceptLanguage.Value(), ""))
+	if localVarOptionals != nil && localVarOptionals.Radiuses.IsSet() {
+		localVarQueryParams.Add("radiuses", parameterToString(localVarOptionals.Radiuses.Value(), ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.Namedetails.IsSet() {
-		localVarQueryParams.Add("namedetails", parameterToString(localVarOptionals.Namedetails.Value(), ""))
+	if localVarOptionals != nil && localVarOptionals.GenerateHints.IsSet() {
+		localVarQueryParams.Add("generate_hints", parameterToString(localVarOptionals.GenerateHints.Value(), ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.Extratags.IsSet() {
-		localVarQueryParams.Add("extratags", parameterToString(localVarOptionals.Extratags.Value(), ""))
+	if localVarOptionals != nil && localVarOptionals.Approaches.IsSet() {
+		localVarQueryParams.Add("approaches", parameterToString(localVarOptionals.Approaches.Value(), ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.Statecode.IsSet() {
-		localVarQueryParams.Add("statecode", parameterToString(localVarOptionals.Statecode.Value(), ""))
+	if localVarOptionals != nil && localVarOptionals.Exclude.IsSet() {
+		localVarQueryParams.Add("exclude", parameterToString(localVarOptionals.Exclude.Value(), ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.Showdistance.IsSet() {
-		localVarQueryParams.Add("showdistance", parameterToString(localVarOptionals.Showdistance.Value(), ""))
+	if localVarOptionals != nil && localVarOptionals.Annotations.IsSet() {
+		localVarQueryParams.Add("annotations", parameterToString(localVarOptionals.Annotations.Value(), ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.Postaladdress.IsSet() {
-		localVarQueryParams.Add("postaladdress", parameterToString(localVarOptionals.Postaladdress.Value(), ""))
+	if localVarOptionals != nil && localVarOptionals.Sources.IsSet() {
+		localVarQueryParams.Add("sources", parameterToString(localVarOptionals.Sources.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Destinations.IsSet() {
+		localVarQueryParams.Add("destinations", parameterToString(localVarOptionals.Destinations.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.FallbackSpeed.IsSet() {
+		localVarQueryParams.Add("fallback_speed", parameterToString(localVarOptionals.FallbackSpeed.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.FallbackCoordinate.IsSet() {
+		localVarQueryParams.Add("fallback_coordinate", parameterToString(localVarOptionals.FallbackCoordinate.Value(), ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -158,7 +157,7 @@ func (a *ReverseApiService) Reverse(ctx _context.Context, lat float32, lon float
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
-			var v Location
+			var v DirectionsMatrix
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()

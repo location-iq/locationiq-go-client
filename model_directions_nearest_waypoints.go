@@ -8,7 +8,10 @@
  */
 
 package openapi
-// Namedetails struct for Namedetails
-type Namedetails struct {
+// DirectionsNearestWaypoints struct for DirectionsNearestWaypoints
+type DirectionsNearestWaypoints struct {
+	Nodes []float32 `json:"nodes,omitempty"`
+	Distance float32 `json:"distance,omitempty"`
+	Location []float32 `json:"location,omitempty"`
 	Name string `json:"name,omitempty"`
 }

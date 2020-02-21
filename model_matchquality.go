@@ -8,7 +8,9 @@
  */
 
 package openapi
-// Namedetails struct for Namedetails
-type Namedetails struct {
-	Name string `json:"name,omitempty"`
+// Matchquality struct for Matchquality
+type Matchquality struct {
+	Matchcode string `json:"matchcode,omitempty"`
+	Matchtype string `json:"matchtype,omitempty"`
+	Matchlevel string `json:"matchlevel,omitempty"`
 }

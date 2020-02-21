@@ -8,7 +8,9 @@
  */
 
 package openapi
-// Namedetails struct for Namedetails
-type Namedetails struct {
-	Name string `json:"name,omitempty"`
+// DirectionsDirections struct for DirectionsDirections
+type DirectionsDirections struct {
+	Code string `json:"code,omitempty"`
+	Waypoints []map[string]interface{} `json:"waypoints,omitempty"`
+	Routes []DirectionsDirectionsRoutes `json:"routes,omitempty"`
 }

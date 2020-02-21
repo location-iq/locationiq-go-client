@@ -8,7 +8,8 @@
  */
 
 package openapi
-// Namedetails struct for Namedetails
-type Namedetails struct {
-	Name string `json:"name,omitempty"`
+// DirectionsNearest struct for DirectionsNearest
+type DirectionsNearest struct {
+	Code string `json:"code,omitempty"`
+	Waypoints []DirectionsNearestWaypoints `json:"waypoints,omitempty"`
 }
