@@ -1,4 +1,4 @@
-# Go API client for openapi
+# Go API client for locationiq
 
 LocationIQ provides flexible enterprise-grade location based solutions. We work with developers, startups and enterprises worldwide serving billions of requests everyday. This page provides an overview of the technical aspects of our API and will help you get started.
 
@@ -23,7 +23,7 @@ go get github.com/antihax/optional
 Put the package under your project folder and add the following in import:
 
 ```golang
-import "./openapi"
+import "./locationiq"
 ```
 
 ## Documentation for API Endpoints
