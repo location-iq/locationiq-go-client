@@ -8,7 +8,9 @@
  */
 
 package locationiq
-// ModelError struct for ModelError
-type ModelError struct {
-	Error string `json:"error,omitempty"`
+// Matchquality struct for Matchquality
+type Matchquality struct {
+	Matchcode string `json:"matchcode,omitempty"`
+	Matchtype string `json:"matchtype,omitempty"`
+	Matchlevel string `json:"matchlevel,omitempty"`
 }

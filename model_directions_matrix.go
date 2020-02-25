@@ -8,7 +8,11 @@
  */
 
 package locationiq
-// ModelError struct for ModelError
-type ModelError struct {
-	Error string `json:"error,omitempty"`
+// DirectionsMatrix struct for DirectionsMatrix
+type DirectionsMatrix struct {
+	Code string `json:"code,omitempty"`
+	Distances []float32 `json:"distances,omitempty"`
+	FallbackSpeedCells []float32 `json:"fallback_speed_cells,omitempty"`
+	Sources []DirectionsMatrixSources `json:"sources,omitempty"`
+	Destinations []DirectionsMatrixSources `json:"destinations,omitempty"`
 }

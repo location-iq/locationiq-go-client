@@ -1,14 +1,20 @@
 openapi: 3.0.0
 info:
-  description: LocationIQ provides flexible enterprise-grade location based solutions. We work with developers, startups and enterprises worldwide serving billions of requests everyday. This page provides an overview of the technical aspects of our API and will help you get started.
+  description: LocationIQ provides flexible enterprise-grade location based solutions.
+    We work with developers, startups and enterprises worldwide serving billions of
+    requests everyday. This page provides an overview of the technical aspects of
+    our API and will help you get started.
   title: LocationIQ
-  version: 1.0.1
+  version: 1.1.0
 servers:
 - url: https://eu1.locationiq.com/v1
 paths:
   /search.php:
     get:
-      description: The Search API allows converting addresses, such as a street address, into geographic coordinates (latitude and longitude). These coordinates can serve various use-cases, from placing markers on a map to helping algorithms determine nearby bus stops. This process is also known as Forward Geocoding.
+      description: The Search API allows converting addresses, such as a street address,
+        into geographic coordinates (latitude and longitude). These coordinates can
+        serve various use-cases, from placing markers on a map to helping algorithms
+        determine nearby bus stops. This process is also known as Forward Geocoding.
       operationId: search
       parameters:
       - description: Address to geocode
@@ -31,7 +37,10 @@ paths:
           - json
           type: string
         style: form
-      - description: For responses with no city value in the address section, the next available element in this order - city_district, locality, town, borough, municipality, village, hamlet, quarter, neighbourhood - from the address section will be normalized to city. Defaults to 1 for SDKs.
+      - description: For responses with no city value in the address section, the
+          next available element in this order - city_district, locality, town, borough,
+          municipality, village, hamlet, quarter, neighbourhood - from the address
+          section will be normalized to city. Defaults to 1 for SDKs.
         example: 1
         explode: true
         in: query
@@ -40,10 +49,10 @@ paths:
         schema:
           enum:
           - 1
-          format: int32
           type: integer
         style: form
-      - description: Include a breakdown of the address into elements. Defaults to 0.
+      - description: Include a breakdown of the address into elements. Defaults to
+          0.
         example: 1
         explode: true
         in: query
@@ -53,7 +62,6 @@ paths:
           enum:
           - 0
           - 1
-          format: int32
           type: integer
         style: form
       - description: 'The preferred area to find search results.  To restrict results
@@ -79,7 +87,6 @@ paths:
           enum:
           - 0
           - 1
-          format: int32
           type: integer
         style: form
       - description: Limit the number of returned results. Default is 10.
@@ -90,10 +97,11 @@ paths:
         required: false
         schema:
           default: 10
-          format: int32
           type: integer
         style: form
-      - description: Preferred language order for showing search results, overrides the value specified in the Accept-Language HTTP header. Defaults to en. To use native language for the response when available, use accept-language=native
+      - description: Preferred language order for showing search results, overrides
+          the value specified in the Accept-Language HTTP header. Defaults to en.
+          To use native language for the response when available, use accept-language=native
         example: '"en"'
         explode: true
         in: query
@@ -111,7 +119,8 @@ paths:
         schema:
           type: string
         style: form
-      - description: Include a list of alternative names in the results. These may include language variants, references, operator and brand.
+      - description: Include a list of alternative names in the results. These may
+          include language variants, references, operator and brand.
         example: 1
         explode: true
         in: query
@@ -121,10 +130,15 @@ paths:
           enum:
           - 0
           - 1
-          format: int32
           type: integer
         style: form
-      - description: Sometimes you have several objects in OSM identifying the same place or object in reality. The simplest case is a street being split in many different OSM ways due to different characteristics. Nominatim will attempt to detect such duplicates and only return one match; this is controlled by the dedupe parameter which defaults to 1. Since the limit is, for reasons of efficiency, enforced before and not after de-duplicating, it is possible that de-duplicating leaves you with less results than requested.
+      - description: Sometimes you have several objects in OSM identifying the same
+          place or object in reality. The simplest case is a street being split in
+          many different OSM ways due to different characteristics. Nominatim will
+          attempt to detect such duplicates and only return one match; this is controlled
+          by the dedupe parameter which defaults to 1. Since the limit is, for reasons
+          of efficiency, enforced before and not after de-duplicating, it is possible
+          that de-duplicating leaves you with less results than requested.
         example: 1
         explode: true
         in: query
@@ -134,10 +148,10 @@ paths:
           enum:
           - 0
           - 1
-          format: int32
           type: integer
         style: form
-      - description: Include additional information in the result if available, e.g. wikipedia link, opening hours.
+      - description: Include additional information in the result if available, e.g.
+          wikipedia link, opening hours.
         example: 0
         explode: true
         in: query
@@ -147,10 +161,11 @@ paths:
           enum:
           - 0
           - 1
-          format: int32
           type: integer
         style: form
-      - description: Adds state or province code when available to the statecode key inside the address element. Currently supported for addresses in the USA, Canada and Australia. Defaults to 0
+      - description: Adds state or province code when available to the statecode key
+          inside the address element. Currently supported for addresses in the USA,
+          Canada and Australia. Defaults to 0
         example: 0
         explode: true
         in: query
@@ -160,18 +175,39 @@ paths:
           enum:
           - 0
           - 1
-          format: int32
+          type: integer
+        style: form
+      - description: Returns additional information about quality of the result in
+          a matchquality object. Read more Defaults to 0 [0,1]
+        example: 0
+        explode: true
+        in: query
+        name: matchquality
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: Returns address inside the postaladdress key, that is specifically
+          formatted for each country. Currently supported for addresses in Germany.
+          Defaults to 0 [0,1]
+        example: 0
+        explode: true
+        in: query
+        name: postaladdress
+        required: false
+        schema:
           type: integer
         style: form
       responses:
-        200:
+        "200":
           content:
             application/json:
               examples:
                 response:
                   value:
                   - place_id: "83874904"
-                    licence: © LocationIQ.com CC BY 4.0, Data © OpenStreetMap contributors, ODbL 1.0
+                    licence: © LocationIQ.com CC BY 4.0, Data © OpenStreetMap contributors,
+                      ODbL 1.0
                     osm_type: way
                     osm_id: "34633854"
                     boundingbox:
@@ -181,7 +217,9 @@ paths:
                     - -73.9848259
                     lat: "40.7484284"
                     lon: -73.9856546198733
-                    display_name: Empire State Building, 350, 5th Avenue, Korea Town, Midtown South, Manhattan, Manhattan Community Board 5, New York County, New York City, New York, 10001, United States of America
+                    display_name: Empire State Building, 350, 5th Avenue, Korea Town,
+                      Midtown South, Manhattan, Manhattan Community Board 5, New York
+                      County, New York City, New York, 10001, United States of America
                     class: tourism
                     type: attraction
                     importance: 0.43072416348613
@@ -199,8 +237,13 @@ paths:
                       postcode: "10001"
                       country: United States of America
                       country_code: us
+                    matchquality:
+                      matchcode: exact
+                      matchtype: point
+                      matchlevel: venue
                   - place_id: "28210682"
-                    licence: © LocationIQ.com CC BY 4.0, Data © OpenStreetMap contributors, ODbL 1.0
+                    licence: © LocationIQ.com CC BY 4.0, Data © OpenStreetMap contributors,
+                      ODbL 1.0
                     osm_type: node
                     osm_id: "2709306673"
                     boundingbox:
@@ -210,7 +253,9 @@ paths:
                     - -73.9849458
                     lat: "40.7481628"
                     lon: -73.9849958
-                    display_name: Empire State Building, 350, 5th Avenue, Korea Town, Midtown South, Manhattan, Manhattan Community Board 5, New York County, New York City, New York, 10001, United States of America
+                    display_name: Empire State Building, 350, 5th Avenue, Korea Town,
+                      Midtown South, Manhattan, Manhattan Community Board 5, New York
+                      County, New York City, New York, 10001, United States of America
                     class: tourism
                     type: attraction
                     importance: 0.30025
@@ -229,7 +274,8 @@ paths:
                       country: United States of America
                       country_code: us
                   - place_id: "66500562"
-                    licence: © LocationIQ.com CC BY 4.0, Data © OpenStreetMap contributors, ODbL 1.0
+                    licence: © LocationIQ.com CC BY 4.0, Data © OpenStreetMap contributors,
+                      ODbL 1.0
                     osm_type: node
                     osm_id: "5552887205"
                     boundingbox:
@@ -239,7 +285,8 @@ paths:
                     - "16.7554074"
                     lat: "52.2957335"
                     lon: "16.7553574"
-                    display_name: Empire State Building, Poznańska, Trzebaw, gmina Stęszew, powiat poznański, Greater Poland Voivodeship, Poland
+                    display_name: Empire State Building, Poznańska, Trzebaw, gmina
+                      Stęszew, powiat poznański, Greater Poland Voivodeship, Poland
                     class: tourism
                     type: artwork
                     importance: 0.30025
@@ -259,7 +306,7 @@ paths:
                 title: fowardresponse
                 type: array
           description: OK
-        400:
+        "400":
           content:
             application/json:
               examples:
@@ -268,18 +315,28 @@ paths:
                     error: Invalid Request
               schema:
                 $ref: '#/components/schemas/error'
-          description: Required parameters are missing, or invalid
-        401:
+          description: Bad Request
+        "401":
           content:
             application/json:
               examples:
                 response:
                   value:
-                    error: Invalid key
+                    error: Invalid Key
               schema:
                 $ref: '#/components/schemas/error'
-          description: An invalid API key was provided / Key not active
-        404:
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    error: Access restricted
+              schema:
+                $ref: '#/components/schemas/error'
+          description: The request has been made from an unauthorized domain.
+        "404":
           content:
             application/json:
               examples:
@@ -289,17 +346,17 @@ paths:
               schema:
                 $ref: '#/components/schemas/error'
           description: No location or places were found for the given input
-        429:
+        "429":
           content:
             application/json:
               examples:
                 response:
                   value:
-                    error: Rate Limited Second
+                    error: Rate Limited Day
               schema:
                 $ref: '#/components/schemas/error'
           description: Request exceeded the rate-limits set on your account
-        500:
+        "500":
           content:
             application/json:
               examples:
@@ -308,7 +365,7 @@ paths:
                     error: Unknown error - Please try again after some time
               schema:
                 $ref: '#/components/schemas/error'
-          description: This is an error on the server's side, we monitor this 24x7 and you should try again.
+          description: Internal Server Error
       security:
       - key: []
       summary: Forward Geocoding
@@ -316,11 +373,14 @@ paths:
       - Search
   /reverse.php:
     get:
-      description: Reverse geocoding is the process of converting a coordinate or location (latitude, longitude) to a readable address or place name. This permits the identification of nearby street addresses, places, and/or area subdivisions such as a neighborhood, county, state, or country.
+      description: Reverse geocoding is the process of converting a coordinate or
+        location (latitude, longitude) to a readable address or place name. This permits
+        the identification of nearby street addresses, places, and/or area subdivisions
+        such as a neighborhood, county, state, or country.
       operationId: reverse
       parameters:
       - description: Latitude of the location to generate an address for.
-        example: 17.24
+        example: 40.7487727
         explode: true
         in: query
         name: lat
@@ -331,7 +391,7 @@ paths:
           type: number
         style: form
       - description: Longitude of the location to generate an address for.
-        example: 74.25
+        example: -73.9849336
         explode: true
         in: query
         name: lon
@@ -361,10 +421,10 @@ paths:
         schema:
           enum:
           - 1
-          format: int32
           type: integer
         style: form
-      - description: Include a breakdown of the address into elements. Defaults to 1.
+      - description: Include a breakdown of the address into elements. Defaults to
+          1.
         example: 1
         explode: true
         in: query
@@ -375,10 +435,11 @@ paths:
           enum:
           - 0
           - 1
-          format: int32
           type: integer
         style: form
-      - description: Preferred language order for showing search results, overrides the value specified in the Accept-Language HTTP header. Defaults to en. To use native language for the response when available, use accept-language=native
+      - description: Preferred language order for showing search results, overrides
+          the value specified in the Accept-Language HTTP header. Defaults to en.
+          To use native language for the response when available, use accept-language=native
         example: '"en"'
         explode: true
         in: query
@@ -387,7 +448,8 @@ paths:
         schema:
           type: string
         style: form
-      - description: Include a list of alternative names in the results. These may include language variants, references, operator and brand.
+      - description: Include a list of alternative names in the results. These may
+          include language variants, references, operator and brand.
         example: 0
         explode: true
         in: query
@@ -397,10 +459,10 @@ paths:
           enum:
           - 0
           - 1
-          format: int32
           type: integer
         style: form
-      - description: Include additional information in the result if available, e.g. wikipedia link, opening hours.
+      - description: Include additional information in the result if available, e.g.
+          wikipedia link, opening hours.
         example: 0
         explode: true
         in: query
@@ -410,10 +472,11 @@ paths:
           enum:
           - 0
           - 1
-          format: int32
           type: integer
         style: form
-      - description: Adds state or province code when available to the statecode key inside the address element. Currently supported for addresses in the USA, Canada and Australia. Defaults to 0
+      - description: Adds state or province code when available to the statecode key
+          inside the address element. Currently supported for addresses in the USA,
+          Canada and Australia. Defaults to 0
         example: 0
         explode: true
         in: query
@@ -423,23 +486,47 @@ paths:
           enum:
           - 0
           - 1
-          format: int32
+          type: integer
+        style: form
+      - description: Returns the straight line distance (meters) between the input
+          location and the result's location. Value is set in the distance key of
+          the response. Defaults to 0 [0,1]
+        example: 0
+        explode: true
+        in: query
+        name: showdistance
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: Returns address inside the postaladdress key, that is specifically
+          formatted for each country. Currently supported for addresses in Germany.
+          Defaults to 0 [0,1]
+        example: 0
+        explode: true
+        in: query
+        name: postaladdress
+        required: false
+        schema:
           type: integer
         style: form
       responses:
-        200:
+        "200":
           content:
             application/json:
               examples:
                 response:
                   value:
                     place_id: "83874904"
-                    licence: © LocationIQ.com CC BY 4.0, Data © OpenStreetMap contributors, ODbL 1.0
+                    licence: © LocationIQ.com CC BY 4.0, Data © OpenStreetMap contributors,
+                      ODbL 1.0
                     osm_type: way
                     osm_id: "34633854"
                     lat: "40.7484284"
                     lon: -73.9856546198733
-                    display_name: Empire State Building, 350, 5th Avenue, Korea Town, Midtown South, Manhattan, Manhattan Community Board 5, New York County, New York City, New York, 10001, United States of America
+                    display_name: Empire State Building, 350, 5th Avenue, Korea Town,
+                      Midtown South, Manhattan, Manhattan Community Board 5, New York
+                      County, New York City, New York, 10001, United States of America
                     address:
                       name: Empire State Building
                       house_number: "350"
@@ -458,10 +545,11 @@ paths:
                     - "40.7489422"
                     - -73.9864855
                     - -73.9848259
+                    distance: "22"
               schema:
                 $ref: '#/components/schemas/location'
           description: OK
-        400:
+        "400":
           content:
             application/json:
               examples:
@@ -470,18 +558,28 @@ paths:
                     error: Invalid Request
               schema:
                 $ref: '#/components/schemas/error'
-          description: Required parameters are missing, or invalid
-        401:
+          description: Bad Request
+        "401":
           content:
             application/json:
               examples:
                 response:
                   value:
-                    error: Key not active - Please write to hello@locationiq.org
+                    error: Invalid Key
               schema:
                 $ref: '#/components/schemas/error'
-          description: An invalid API key was provided / Key not active
-        404:
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    error: Access restricted
+              schema:
+                $ref: '#/components/schemas/error'
+          description: The request has been made from an unauthorized domain.
+        "404":
           content:
             application/json:
               examples:
@@ -491,17 +589,17 @@ paths:
               schema:
                 $ref: '#/components/schemas/error'
           description: No location or places were found for the given input
-        429:
+        "429":
           content:
             application/json:
               examples:
                 response:
                   value:
-                    error: Rate Limited Second
+                    error: Rate Limited Day
               schema:
                 $ref: '#/components/schemas/error'
-          description: Too Many Requests
-        500:
+          description: Request exceeded the rate-limits set on your account
+        "500":
           content:
             application/json:
               examples:
@@ -510,7 +608,7 @@ paths:
                     error: Unknown error - Please try again after some time
               schema:
                 $ref: '#/components/schemas/error'
-          description: Unknown error - Please try again after some time
+          description: Internal Server Error
       security:
       - key: []
       summary: Reverse Geocoding
@@ -518,10 +616,12 @@ paths:
       - reverse
   /balance.php:
     get:
-      description: The Balance API provides a count of request credits left in the user's account for the day. Balance is reset at midnight UTC everyday (00:00 UTC).
+      description: The Balance API provides a count of request credits left in the
+        user's account for the day. Balance is reset at midnight UTC everyday (00:00
+        UTC).
       operationId: balance
       responses:
-        200:
+        "200":
           content:
             application/json:
               examples:
@@ -533,7 +633,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/balance'
           description: OK
-        400:
+        "400":
           content:
             application/json:
               examples:
@@ -543,17 +643,37 @@ paths:
               schema:
                 $ref: '#/components/schemas/error'
           description: Bad Request
-        401:
+        "401":
           content:
             application/json:
               examples:
                 response:
                   value:
-                    error: Invalid key
+                    error: Invalid Key
               schema:
                 $ref: '#/components/schemas/error'
           description: Unauthorized
-        429:
+        "403":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    error: Access restricted
+              schema:
+                $ref: '#/components/schemas/error'
+          description: The request has been made from an unauthorized domain.
+        "404":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    error: Unable to geocode
+              schema:
+                $ref: '#/components/schemas/error'
+          description: No location or places were found for the given input
+        "429":
           content:
             application/json:
               examples:
@@ -562,8 +682,8 @@ paths:
                     error: Rate Limited Day
               schema:
                 $ref: '#/components/schemas/error'
-          description: Too Many Requests
-        500:
+          description: Request exceeded the rate-limits set on your account
+        "500":
           content:
             application/json:
               examples:
@@ -577,11 +697,1247 @@ paths:
       - key: []
       tags:
       - Balance
+  /autocomplete.php:
+    get:
+      description: The Autocomplete API is a variant of the Search API that returns
+        place predictions in response to an HTTP request.  The request specifies a
+        textual search string and optional geographic bounds.  The service can be
+        used to provide autocomplete functionality for text-based geographic searches,
+        by returning places such as businesses, addresses and points of interest as
+        a user types. The Autocomplete API can match on full words as well as substrings.
+        Applications can therefore send queries as the user types, to provide on-the-fly
+        place predictions.
+      operationId: autocomplete
+      parameters:
+      - description: Address to geocode
+        example: '"Empire state"'
+        explode: true
+        in: query
+        name: q
+        required: true
+        schema:
+          type: string
+        style: form
+      - description: Limit the number of returned results. Default is 10.
+        example: 10
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 10
+          type: integer
+        style: form
+      - description: 'The preferred area to find search results.  To restrict results
+          to those within the viewbox, use along with the bounded option. Tuple of
+          4 floats. Any two corner points of the box - `max_lon,max_lat,min_lon,min_lat`
+          or `min_lon,min_lat,max_lon,max_lat` - are accepted in any order as long
+          as they span a real box. '
+        example: '"-132.84908,47.69382,-70.44674,30.82531"'
+        explode: true
+        in: query
+        name: viewbox
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Restrict the results to only items contained with the viewbox
+        example: 1
+        explode: true
+        in: query
+        name: bounded
+        required: false
+        schema:
+          enum:
+          - 0
+          - 1
+          type: integer
+        style: form
+      - description: Limit search to a list of countries.
+        example: '"us"'
+        explode: true
+        in: query
+        name: countrycodes
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: For responses with no city value in the address section, the
+          next available element in this order - city_district, locality, town, borough,
+          municipality, village, hamlet, quarter, neighbourhood - from the address
+          section will be normalized to city. Defaults to 1 for SDKs.
+        example: 1
+        explode: true
+        in: query
+        name: normalizecity
+        required: true
+        schema:
+          enum:
+          - 1
+          type: integer
+        style: form
+      - description: Preferred language order for showing search results, overrides
+          the value specified in the Accept-Language HTTP header. Defaults to en.
+          To use native language for the response when available, use accept-language=native
+        example: '"en"'
+        explode: true
+        in: query
+        name: accept-language
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: 'Restricts the autocomplete search results to elements of specific
+          OSM class and type.  Example - To restrict results to only class place and
+          type city: tag=place:city, To restrict the results to all of OSM class place:
+          tag=place'
+        example: '"place"'
+        explode: true
+        in: query
+        name: tag
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    place_id: "321978604508"
+                    osm_id: "34633854"
+                    osm_type: way
+                    licence: https://locationiq.com/attribution
+                    lat: "40.7484284"
+                    lon: -73.9856546198733
+                    boundingbox:
+                    - "40.7479226"
+                    - "40.7489422"
+                    - -73.9864855
+                    - -73.9848259
+                    class: tourism
+                    type: attraction
+                    display_name: Empire State Building, 350, 5th Avenue, Korea Town,
+                      Midtown South, Manhattan, Manhattan Community Board 5, New York
+                      County, New York City, New York, 10001, United States of America
+                    display_place: Empire State Building
+                    display_address: 350, 5th Avenue, Midtown South, New York City,
+                      New York, 10001, USA
+                    address:
+                      name: Empire State Building
+                      house_number: "350"
+                      road: 5th Avenue
+                      suburb: Midtown South
+                      city: New York City
+                      state: New York
+                      postcode: "10001"
+                      country: United States of America
+                      country_code: us
+              schema:
+                $ref: '#/components/schemas/autocomplete'
+          description: OK
+        "400":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    error: Invalid Request
+              schema:
+                $ref: '#/components/schemas/error'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    error: Invalid Key
+              schema:
+                $ref: '#/components/schemas/error'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    error: Access restricted
+              schema:
+                $ref: '#/components/schemas/error'
+          description: The request has been made from an unauthorized domain.
+        "404":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    error: Unable to geocode
+              schema:
+                $ref: '#/components/schemas/error'
+          description: No location or places were found for the given input
+        "429":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    error: Rate Limited Day
+              schema:
+                $ref: '#/components/schemas/error'
+          description: Request exceeded the rate-limits set on your account
+        "500":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    error: Unknown error - Please try again after some time
+              schema:
+                $ref: '#/components/schemas/error'
+          description: Internal Server Error
+      security:
+      - key: []
+      tags:
+      - Autocomplete
+  /directions/driving/{coordinates}:
+    get:
+      description: Finds the fastest route between coordinates in the supplied order.
+      operationId: Directions
+      parameters:
+      - description: "Limits the search to segments with given bearing in degrees\
+          \ towards true north in clockwise direction. List of positive integer pairs\
+          \ separated by semi-colon and bearings array should be equal to length of\
+          \ coordinate array.\nInput Value :- {bearing};{bearing}[;{bearing} ...]\
+          \ Bearing follows the following format : bearing\t{value},{range} integer\
+          \ 0 .. 360,integer 0 .. 180"
+        example: '"10,20;40,30;30,9"'
+        explode: true
+        in: query
+        name: bearings
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Limits the search to given radius in meters Radiuses array length
+          should be same as coordinates array, eaach value separated by semi-colon.
+          Input Value - {radius};{radius}[;{radius} ...] Radius has following format
+          :- double >= 0 or unlimited (default)
+        example: '"500;200;300"'
+        explode: true
+        in: query
+        name: radiuses
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Adds a Hint to the response which can be used in subsequent requests,
+          see hints parameter. Input Value - true (default), false Format - Base64
+          String
+        example: '"false"'
+        explode: true
+        in: query
+        name: generate_hints
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Keep waypoints on curb side. Input Value - {approach};{approach}[;{approach}
+          ...] Format - curb or unrestricted (default)
+        example: '"curb;curb;curb"'
+        explode: true
+        in: query
+        name: approaches
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Additive list of classes to avoid, order does not matter. input
+          Value - {class}[,{class}] Format - A class name determined by the profile
+          or none.
+        example: '"toll"'
+        explode: true
+        in: query
+        name: exclude
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: String of format {longitude},{latitude};{longitude},{latitude}[;{longitude},{latitude}
+          ...] or polyline({polyline}) or polyline6({polyline6}). polyline follows
+          Google's polyline format with precision 5
+        example: '"-0.16102,51.523854;-0.15797,51.52326;-0.161593,51.522550"'
+        explode: false
+        in: path
+        name: coordinates
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Search for alternative routes. Passing a number alternatives=n
+          searches for up to n alternative routes. [ true, false (default), or Number
+          ]
+        example: 0
+        explode: true
+        in: query
+        name: alternatives
+        required: false
+        schema:
+          type: number
+        style: form
+      - description: Returned route steps for each route leg [ true, false (default)
+          ]
+        example: '"true"'
+        explode: true
+        in: query
+        name: steps
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Returns additional metadata for each coordinate along the route
+          geometry.  [ true, false (default), nodes, distance, duration, datasources,
+          weight, speed ]
+        example: '"false"'
+        explode: true
+        in: query
+        name: annotations
+        required: false
+        schema:
+          default: '"false"'
+          type: string
+        style: form
+      - description: Returned route geometry format (influences overview and per step)
+          [ polyline (default), polyline6, geojson ]
+        example: '"polyline"'
+        explode: true
+        in: query
+        name: geometries
+        required: false
+        schema:
+          default: '"polyline"'
+          type: string
+        style: form
+      - description: Add overview geometry either full, simplified according to highest
+          zoom level it could be display on, or not at all. [ simplified (default),
+          full, false ]
+        example: '"simplified"'
+        explode: true
+        in: query
+        name: overview
+        required: false
+        schema:
+          default: '"simplified"'
+          type: string
+        style: form
+      - description: Forces the route to keep going straight at waypoints constraining
+          uturns there even if it would be faster. Default value depends on the profile
+          [ default (default), true, false ]
+        example: '"default"'
+        explode: true
+        in: query
+        name: continue_straight
+        required: false
+        schema:
+          default: '"default"'
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    code: ok
+                    waypoints:
+                      distance: 159.132824
+                      location:
+                      - -0.161547
+                      - 51.522462
+                      name: Balcombe Street
+                    routes:
+                      legs:
+                        steps: []
+                        weight: 22.7
+                        distance: 104.2
+                        summary: ""
+                        duration: 24.8
+                      weight_name: routability
+                      geometry: k~myHtp^KeA_@aEACCW
+                      weight: 22.6
+                      distance: 104.8
+                      duration: 24.8
+              schema:
+                $ref: '#/components/schemas/directions-directions'
+          description: OK
+        "400":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    error: Invalid Request
+              schema:
+                $ref: '#/components/schemas/error'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    error: Invalid Key
+              schema:
+                $ref: '#/components/schemas/error'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    error: Access restricted
+              schema:
+                $ref: '#/components/schemas/error'
+          description: The request has been made from an unauthorized domain.
+        "404":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    error: Unable to geocode
+              schema:
+                $ref: '#/components/schemas/error'
+          description: No location or places were found for the given input
+        "429":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    error: Rate Limited Day
+              schema:
+                $ref: '#/components/schemas/error'
+          description: Request exceeded the rate-limits set on your account
+        "500":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    error: Unknown error - Please try again after some time
+              schema:
+                $ref: '#/components/schemas/error'
+          description: Internal Server Error
+      security:
+      - key: []
+      summary: Directions Service
+      tags:
+      - Directions
+  /matching/driving/{coordinates}:
+    get:
+      description: Matching API matches or snaps given GPS points to the road network
+        in the most plausible way.  Please note the request might result multiple
+        sub-traces.  Large jumps in the timestamps (> 60s) or improbable transitions
+        lead to trace splits if a complete matching could not be found. The algorithm
+        might not be able to match all points. Outliers are removed if they can not
+        be matched successfully.
+      operationId: Matching
+      parameters:
+      - description: Adds a Hint to the response which can be used in subsequent requests,
+          see hints parameter. Input Value - true (default), false Format - Base64
+          String
+        example: '"false"'
+        explode: true
+        in: query
+        name: generate_hints
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Keep waypoints on curb side. Input Value - {approach};{approach}[;{approach}
+          ...] Format - curb or unrestricted (default)
+        example: '"curb;curb;curb"'
+        explode: true
+        in: query
+        name: approaches
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Additive list of classes to avoid, order does not matter. input
+          Value - {class}[,{class}] Format - A class name determined by the profile
+          or none.
+        example: '"toll"'
+        explode: true
+        in: query
+        name: exclude
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: "Limits the search to segments with given bearing in degrees\
+          \ towards true north in clockwise direction. List of positive integer pairs\
+          \ separated by semi-colon and bearings array should be equal to length of\
+          \ coordinate array.\nInput Value :- {bearing};{bearing}[;{bearing} ...]\
+          \ Bearing follows the following format : bearing\t{value},{range} integer\
+          \ 0 .. 360,integer 0 .. 180"
+        example: '"None"'
+        explode: true
+        in: query
+        name: bearings
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Limits the search to given radius in meters Radiuses array length
+          should be same as coordinates array, eaach value separated by semi-colon.
+          Input Value - {radius};{radius}[;{radius} ...] Radius has following format
+          :- double >= 0 or unlimited (default)
+        example: '"None"'
+        explode: true
+        in: query
+        name: radiuses
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: String of format {longitude},{latitude};{longitude},{latitude}[;{longitude},{latitude}
+          ...] or polyline({polyline}) or polyline6({polyline6}). polyline follows
+          Google's polyline format with precision 5
+        example: '"-0.16102,51.523854;-0.15797,51.52326;-0.161593,51.522550"'
+        explode: false
+        in: path
+        name: coordinates
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Returned route steps for each route leg [ true, false (default)
+          ]
+        example: '"true"'
+        explode: true
+        in: query
+        name: steps
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Returns additional metadata for each coordinate along the route
+          geometry.  [ true, false (default), nodes, distance, duration, datasources,
+          weight, speed ]
+        example: '"false"'
+        explode: true
+        in: query
+        name: annotations
+        required: false
+        schema:
+          default: '"false"'
+          type: string
+        style: form
+      - description: Returned route geometry format (influences overview and per step)
+          [ polyline (default), polyline6, geojson ]
+        example: '"polyline"'
+        explode: true
+        in: query
+        name: geometries
+        required: false
+        schema:
+          default: '"polyline"'
+          type: string
+        style: form
+      - description: Add overview geometry either full, simplified according to highest
+          zoom level it could be display on, or not at all. [ simplified (default),
+          full, false ]
+        example: '"simplified"'
+        explode: true
+        in: query
+        name: overview
+        required: false
+        schema:
+          default: '"simplified"'
+          type: string
+        style: form
+      - description: Timestamps for the input locations in seconds since UNIX epoch.
+          Timestamps need to be monotonically increasing. [ {timestamp};{timestamp}[;{timestamp}
+          ...]  integer seconds since UNIX epoch
+        example: '"200;300;900"'
+        explode: true
+        in: query
+        name: timestamps
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Allows the input track splitting based on huge timestamp gaps
+          between points. [ split (default), ignore ]
+        example: '"ignore"'
+        explode: true
+        in: query
+        name: gaps
+        required: false
+        schema:
+          default: '"split"'
+          type: string
+        style: form
+      - description: Allows the input track modification to obtain better matching
+          quality for noisy tracks. [ true, false (default) ]
+        example: '"false"'
+        explode: true
+        in: query
+        name: tidy
+        required: false
+        schema:
+          default: '"false"'
+          type: string
+        style: form
+      - description: Treats input coordinates indicated by given indices as waypoints
+          in returned Match object. Default is to treat all input coordinates as waypoints.
+          [ {index};{index};{index}... ]
+        example: '"0;1;2"'
+        explode: true
+        in: query
+        name: waypoints
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    code: ok
+                    tracepoints:
+                      waypoint_index: 0
+                      matchings_index: 0
+                      alternatives_count: 0
+                      distance: 8.414822
+                      location:
+                      - -0.161136
+                      - 51.523832
+                      name: Huntsworth Mews
+                    matchings:
+                      duration: 109.3
+                      distance: 752.4
+                      weight: 109.3
+                      geometry: '}fnyHbn^|@_@O_BeDlAw@}G~@uB@WXs@fE}Ab@OxBpU'
+                      confidence: 0
+                      weight_name: routability
+                      legs:
+                        steps: []
+                        weight: 10.2
+                        distance: 36.7
+                        summary: ""
+                        duration: 10.2
+              schema:
+                $ref: '#/components/schemas/directions-matching'
+          description: OK
+        "400":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    error: Invalid Request
+              schema:
+                $ref: '#/components/schemas/error'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    error: Invalid Key
+              schema:
+                $ref: '#/components/schemas/error'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    error: Access restricted
+              schema:
+                $ref: '#/components/schemas/error'
+          description: The request has been made from an unauthorized domain.
+        "404":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    error: Unable to geocode
+              schema:
+                $ref: '#/components/schemas/error'
+          description: No location or places were found for the given input
+        "429":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    error: Rate Limited Day
+              schema:
+                $ref: '#/components/schemas/error'
+          description: Request exceeded the rate-limits set on your account
+        "500":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    error: Unknown error - Please try again after some time
+              schema:
+                $ref: '#/components/schemas/error'
+          description: Internal Server Error
+      security:
+      - key: []
+      summary: Matching Service
+      tags:
+      - Matching
+  /matrix/driving/{coordinates}:
+    get:
+      description: Computes duration of the fastest route between all pairs of supplied
+        coordinates. Returns the durations or distances or both between the coordinate
+        pairs. Note that the distances are not the shortest distance between two coordinates,
+        but rather the distances of the fastest routes.
+      operationId: Matrix
+      parameters:
+      - description: "Limits the search to segments with given bearing in degrees\
+          \ towards true north in clockwise direction. List of positive integer pairs\
+          \ separated by semi-colon and bearings array should be equal to length of\
+          \ coordinate array.\nInput Value :- {bearing};{bearing}[;{bearing} ...]\
+          \ Bearing follows the following format : bearing\t{value},{range} integer\
+          \ 0 .. 360,integer 0 .. 180"
+        example: '"10,20;40,30;30,9"'
+        explode: true
+        in: query
+        name: bearings
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Limits the search to given radius in meters Radiuses array length
+          should be same as coordinates array, eaach value separated by semi-colon.
+          Input Value - {radius};{radius}[;{radius} ...] Radius has following format
+          :- double >= 0 or unlimited (default)
+        example: '"500;200;300"'
+        explode: true
+        in: query
+        name: radiuses
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Adds a Hint to the response which can be used in subsequent requests,
+          see hints parameter. Input Value - true (default), false Format - Base64
+          String
+        example: '"false"'
+        explode: true
+        in: query
+        name: generate_hints
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Keep waypoints on curb side. Input Value - {approach};{approach}[;{approach}
+          ...] Format - curb or unrestricted (default)
+        example: '"curb;curb;curb"'
+        explode: true
+        in: query
+        name: approaches
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Additive list of classes to avoid, order does not matter. input
+          Value - {class}[,{class}] Format - A class name determined by the profile
+          or none.
+        example: '"toll"'
+        explode: true
+        in: query
+        name: exclude
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: String of format {longitude},{latitude};{longitude},{latitude}[;{longitude},{latitude}
+          ...] or polyline({polyline}) or polyline6({polyline6}). polyline follows
+          Google's polyline format with precision 5
+        example: '"-0.16102,51.523854;-0.15797,51.52326;-0.161593,51.522550"'
+        explode: false
+        in: path
+        name: coordinates
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Returns additional metadata for each coordinate along the route
+          geometry.  [ true, false (default), nodes, distance, duration, datasources,
+          weight, speed ]
+        example: '"distance"'
+        explode: true
+        in: query
+        name: annotations
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: "Use location with given index as source. [ {index};{index}[;{index}\
+          \ ...] or all (default) ] => index\t 0 <= integer < #locations"
+        example: 0
+        explode: true
+        in: query
+        name: sources
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: Use location with given index as destination. [ {index};{index}[;{index}
+          ...] or all (default) ]
+        example: 2
+        explode: true
+        in: query
+        name: destinations
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: If no route found between a source/destination pair, calculate
+          the as-the-crow-flies distance,  then use this speed to estimate duration.
+          double > 0
+        example: 25.65
+        explode: true
+        in: query
+        name: fallback_speed
+        required: false
+        schema:
+          type: number
+        style: form
+      - description: When using a fallback_speed, use the user-supplied coordinate
+          (input), or the snapped location (snapped) for calculating distances. [
+          input (default), or snapped ]
+        example: '"snapped"'
+        explode: true
+        in: query
+        name: fallback_coordinate
+        required: false
+        schema:
+          default: '"input"'
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    code: ok
+                    fallback_speed_cells: []
+                    distances:
+                    - - 392.9
+                    sources:
+                      distance: 159.132824
+                      location:
+                      - -0.161547
+                      - 51.522462
+                      name: Balcombe Street
+                    destinations:
+                      distance: 158.798387
+                      location:
+                      - -0.159453
+                      - 51.522045
+                      name: ""
+              schema:
+                $ref: '#/components/schemas/directions-matrix'
+          description: OK
+        "400":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    error: Invalid Request
+              schema:
+                $ref: '#/components/schemas/error'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    error: Invalid Key
+              schema:
+                $ref: '#/components/schemas/error'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    error: Access restricted
+              schema:
+                $ref: '#/components/schemas/error'
+          description: The request has been made from an unauthorized domain.
+        "404":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    error: Unable to geocode
+              schema:
+                $ref: '#/components/schemas/error'
+          description: No location or places were found for the given input
+        "429":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    error: Rate Limited Day
+              schema:
+                $ref: '#/components/schemas/error'
+          description: Request exceeded the rate-limits set on your account
+        "500":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    error: Unknown error - Please try again after some time
+              schema:
+                $ref: '#/components/schemas/error'
+          description: Internal Server Error
+      security:
+      - key: []
+      summary: Matrix Service
+      tags:
+      - Matrix
+  /nearest/driving/{coordinates}:
+    get:
+      description: Snaps a coordinate to the street network and returns the nearest
+        n matches. Where coordinates only supports a single {longitude},{latitude}
+        entry.
+      operationId: Nearest
+      parameters:
+      - description: Adds a Hint to the response which can be used in subsequent requests,
+          see hints parameter. Input Value - true (default), false Format - Base64
+          String
+        example: '"false"'
+        explode: true
+        in: query
+        name: generate_hints
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Additive list of classes to avoid, order does not matter. input
+          Value - {class}[,{class}] Format - A class name determined by the profile
+          or none.
+        example: '"toll"'
+        explode: true
+        in: query
+        name: exclude
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: "Limits the search to segments with given bearing in degrees\
+          \ towards true north in clockwise direction. List of positive integer pairs\
+          \ separated by semi-colon and bearings array should be equal to length of\
+          \ coordinate array.\nInput Value :- {bearing};{bearing}[;{bearing} ...]\
+          \ Bearing follows the following format : bearing\t{value},{range} integer\
+          \ 0 .. 360,integer 0 .. 180"
+        example: '"10,20"'
+        explode: true
+        in: query
+        name: bearings
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Limits the search to given radius in meters Radiuses array length
+          should be same as coordinates array, eaach value separated by semi-colon.
+          Input Value - {radius};{radius}[;{radius} ...] Radius has following format
+          :- double >= 0 or unlimited (default)
+        example: '"1000"'
+        explode: true
+        in: query
+        name: radiuses
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Keep waypoints on curb side. Input Value - {approach};{approach}[;{approach}
+          ...] Format - curb or unrestricted (default)
+        example: '"curb"'
+        explode: true
+        in: query
+        name: approaches
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: String of format {longitude},{latitude};{longitude},{latitude}[;{longitude},{latitude}
+          ...] or polyline({polyline}) or polyline6({polyline6}). polyline follows
+          Google's polyline format with precision 5
+        example: '"-0.16102,51.523854"'
+        explode: false
+        in: path
+        name: coordinates
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Number of nearest segments that should be returned. [ integer
+          >= 1 (default 1) ]
+        example: 3
+        explode: true
+        in: query
+        name: number
+        required: false
+        schema:
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    waypoints:
+                      nodes:
+                      - 2966517546
+                      - 0
+                      distance: 159.132824
+                      location:
+                      - -0.161547
+                      - 51.522462
+                      name: Balcombe Street
+                    code: '"ok"'
+              schema:
+                $ref: '#/components/schemas/directions-nearest'
+          description: OK
+        "400":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    error: Invalid Request
+              schema:
+                $ref: '#/components/schemas/error'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    error: Invalid Key
+              schema:
+                $ref: '#/components/schemas/error'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    error: Access restricted
+              schema:
+                $ref: '#/components/schemas/error'
+          description: The request has been made from an unauthorized domain.
+        "404":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    error: Unable to geocode
+              schema:
+                $ref: '#/components/schemas/error'
+          description: No location or places were found for the given input
+        "429":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    error: Rate Limited Day
+              schema:
+                $ref: '#/components/schemas/error'
+          description: Request exceeded the rate-limits set on your account
+        "500":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    error: Unknown error - Please try again after some time
+              schema:
+                $ref: '#/components/schemas/error'
+          description: Internal Server Error
+      security:
+      - key: []
+      summary: Nearest Service
+      tags:
+      - Nearest
 components:
+  parameters:
+    bearings:
+      description: "Limits the search to segments with given bearing in degrees towards\
+        \ true north in clockwise direction. List of positive integer pairs separated\
+        \ by semi-colon and bearings array should be equal to length of coordinate\
+        \ array.\nInput Value :- {bearing};{bearing}[;{bearing} ...] Bearing follows\
+        \ the following format : bearing\t{value},{range} integer 0 .. 360,integer\
+        \ 0 .. 180"
+      example: '"10,20;40,30;30,9"'
+      explode: true
+      in: query
+      name: bearings
+      required: false
+      schema:
+        type: string
+      style: form
+    radiuses:
+      description: Limits the search to given radius in meters Radiuses array length
+        should be same as coordinates array, eaach value separated by semi-colon.
+        Input Value - {radius};{radius}[;{radius} ...] Radius has following format
+        :- double >= 0 or unlimited (default)
+      example: '"500;200;300"'
+      explode: true
+      in: query
+      name: radiuses
+      required: false
+      schema:
+        type: string
+      style: form
+    generate_hints:
+      description: Adds a Hint to the response which can be used in subsequent requests,
+        see hints parameter. Input Value - true (default), false Format - Base64 String
+      example: '"false"'
+      explode: true
+      in: query
+      name: generate_hints
+      required: false
+      schema:
+        type: string
+      style: form
+    approaches:
+      description: Keep waypoints on curb side. Input Value - {approach};{approach}[;{approach}
+        ...] Format - curb or unrestricted (default)
+      example: '"curb;curb;curb"'
+      explode: true
+      in: query
+      name: approaches
+      required: false
+      schema:
+        type: string
+      style: form
+    exclude:
+      description: Additive list of classes to avoid, order does not matter. input
+        Value - {class}[,{class}] Format - A class name determined by the profile
+        or none.
+      example: '"toll"'
+      explode: true
+      in: query
+      name: exclude
+      required: false
+      schema:
+        type: string
+      style: form
+    postaladdress:
+      description: Returns address inside the postaladdress key, that is specifically
+        formatted for each country. Currently supported for addresses in Germany.
+        Defaults to 0 [0,1]
+      example: 0
+      explode: true
+      in: query
+      name: postaladdress
+      required: false
+      schema:
+        type: integer
+      style: form
+  responses:
+    "400Error":
+      content:
+        application/json:
+          examples:
+            response:
+              value:
+                error: Invalid Request
+          schema:
+            $ref: '#/components/schemas/error'
+      description: Bad Request
+    "401Error":
+      content:
+        application/json:
+          examples:
+            response:
+              value:
+                error: Invalid Key
+          schema:
+            $ref: '#/components/schemas/error'
+      description: Unauthorized
+    "403Error":
+      content:
+        application/json:
+          examples:
+            response:
+              value:
+                error: Access restricted
+          schema:
+            $ref: '#/components/schemas/error'
+      description: The request has been made from an unauthorized domain.
+    "404Error":
+      content:
+        application/json:
+          examples:
+            response:
+              value:
+                error: Unable to geocode
+          schema:
+            $ref: '#/components/schemas/error'
+      description: No location or places were found for the given input
+    "429Error":
+      content:
+        application/json:
+          examples:
+            response:
+              value:
+                error: Rate Limited Day
+          schema:
+            $ref: '#/components/schemas/error'
+      description: Request exceeded the rate-limits set on your account
+    "500Error":
+      content:
+        application/json:
+          examples:
+            response:
+              value:
+                error: Unknown error - Please try again after some time
+          schema:
+            $ref: '#/components/schemas/error'
+      description: Internal Server Error
   schemas:
     namedetails:
       example:
-        name: Empire State Building
+        name: '"Empire State Building"'
       properties:
         name:
           type: string
@@ -659,10 +2015,8 @@ components:
     daybalance:
       properties:
         day:
-          format: int32
           type: integer
         bonus:
-          format: int32
           type: integer
       title: daybalance
       type: object
@@ -677,7 +2031,8 @@ components:
     location:
       example:
         place_id: "223483692"
-        licence: © LocationIQ.com CC BY 4.0, Data © OpenStreetMap contributors, ODbL 1.0
+        licence: © LocationIQ.com CC BY 4.0, Data © OpenStreetMap contributors, ODbL
+          1.0
         osm_type: way
         osm_id: "19301621"
         boundingbox:
@@ -687,22 +2042,25 @@ components:
         - -84.292724851595
         lat: "39.3074555677816"
         lon: -84.2927748515948
-        display_name: 3894, Spring Mill Way, Hunter’s Point, Landen, Warren County, Ohio, 45039, United States of America
+        display_name: 3894, Spring Mill Way, Hunter’s Point, Landen, Warren County,
+          Ohio, 45039, United States of America
         class: place
         type: house
         importance: 0.62025
-        address:
-          house_number: "3894"
-          road: Spring Mill Way
-          residential: Hunter’s Point
-          village: Landen
-          county: Warren County
-          state: Ohio
-          postcode: "45039"
-          country: United States of America
-          country_code: us
-          city: Landen
+        address: Empire State Building
+        house_number: "3894"
+        road: Spring Mill Way
+        residential: Hunter’s Point
+        village: Landen
+        county: Warren County
+        state: Ohio
+        postcode: "45039"
+        country: United States of America
+        country_code: us
+        city: Landen
       properties:
+        distance:
+          type: number
         place_id:
           type: string
         licence:
@@ -731,8 +2089,614 @@ components:
           $ref: '#/components/schemas/address'
         namedetails:
           $ref: '#/components/schemas/namedetails'
+        matchquality:
+          $ref: '#/components/schemas/matchquality'
       title: location
       type: object
+    waypoints:
+      items:
+        properties:
+          distance:
+            type: number
+          location:
+            items:
+              type: number
+            type: array
+        type: object
+      type: array
+    directions_route_legs:
+      items:
+        properties:
+          steps:
+            items:
+              properties:
+                intersections:
+                  properties:
+                    out:
+                      type: number
+                    entry:
+                      type: string
+                    location:
+                      items:
+                        type: number
+                      type: array
+                    bearings:
+                      type: number
+                  type: object
+                driving_side:
+                  type: string
+                geometry:
+                  type: string
+                duration:
+                  type: number
+                distance:
+                  type: number
+                name:
+                  type: string
+                weight:
+                  type: number
+                mode:
+                  type: string
+                maneuver:
+                  items:
+                    properties:
+                      bearing_after:
+                        type: number
+                      location:
+                        items:
+                          type: number
+                        type: array
+                      type:
+                        type: string
+                      bearing_before:
+                        type: number
+                      modifier:
+                        type: string
+                      ref:
+                        type: string
+                    type: object
+                  type: array
+              type: object
+            type: array
+          weight:
+            type: number
+          distance:
+            type: number
+          annotations:
+            properties:
+              speed:
+                items:
+                  type: number
+                type: array
+              metadata:
+                properties:
+                  datasource_names:
+                    items:
+                      type: string
+                    type: array
+                type: object
+              nodes:
+                items:
+                  type: number
+                type: array
+              duration:
+                items:
+                  type: number
+                type: array
+              distance:
+                items:
+                  type: number
+                type: array
+              weight:
+                items:
+                  type: number
+                type: array
+              datasources:
+                items:
+                  type: number
+                type: array
+            type: object
+          summary:
+            type: string
+          duration:
+            type: string
+        type: object
+      type: array
+    matchings_route_legs:
+      items:
+        properties:
+          steps:
+            items:
+              properties:
+                intersections:
+                  properties:
+                    out:
+                      type: number
+                    entry:
+                      type: string
+                    location:
+                      items:
+                        type: number
+                      type: array
+                    bearings:
+                      type: number
+                  type: object
+                driving_side:
+                  type: string
+                geometry:
+                  type: string
+                duration:
+                  type: number
+                distance:
+                  type: number
+                name:
+                  type: string
+                weight:
+                  type: number
+                mode:
+                  type: string
+                maneuver:
+                  items:
+                    properties:
+                      bearing_after:
+                        type: number
+                      location:
+                        items:
+                          type: number
+                        type: array
+                      type:
+                        type: string
+                      bearing_before:
+                        type: number
+                      modifier:
+                        type: string
+                      ref:
+                        type: string
+                    type: object
+                  type: array
+              type: object
+            type: array
+          weight:
+            type: number
+          distance:
+            type: number
+          summary:
+            type: string
+          duration:
+            type: string
+        type: object
+      type: array
+    matching_tracepoints:
+      items:
+        properties:
+          waypoint_index:
+            type: integer
+          matchings_index:
+            type: integer
+          alternatives_count:
+            type: integer
+          distance:
+            type: number
+          location:
+            items:
+              type: number
+            type: array
+          name:
+            type: string
+        type: object
+      type: array
+    matching_matchings:
+      items:
+        properties:
+          duration:
+            type: number
+          distance:
+            type: number
+          weight:
+            type: number
+          geometry:
+            type: string
+          confidence:
+            type: number
+          weight_name:
+            type: string
+          legs:
+            $ref: '#/components/schemas/matchings_route_legs'
+        type: object
+      type: array
+    directions-directions:
+      example:
+        routes:
+        - duration: 1.4658129805029452
+          distance: 6.027456183070403
+          legs:
+          - '{}'
+          - '{}'
+          weight_name: weight_name
+          weight: 0.8008281904610115
+          geometry: geometry
+        - duration: 1.4658129805029452
+          distance: 6.027456183070403
+          legs:
+          - '{}'
+          - '{}'
+          weight_name: weight_name
+          weight: 0.8008281904610115
+          geometry: geometry
+        code: code
+        waypoints:
+        - '{}'
+        - '{}'
+      properties:
+        code:
+          type: string
+        waypoints:
+          items:
+            properties:
+              distance:
+                type: number
+              location:
+                items:
+                  type: number
+                type: array
+            type: object
+          type: array
+        routes:
+          items:
+            $ref: '#/components/schemas/directions_directions_routes'
+          type: array
+      title: Directions
+      type: object
+    directions-matching:
+      example:
+        tracepoints:
+        - '{}'
+        - '{}'
+        code: code
+        matchings:
+        - '{}'
+        - '{}'
+      properties:
+        code:
+          type: string
+        tracepoints:
+          items:
+            properties:
+              waypoint_index:
+                type: integer
+              matchings_index:
+                type: integer
+              alternatives_count:
+                type: integer
+              distance:
+                type: number
+              location:
+                items:
+                  type: number
+                type: array
+              name:
+                type: string
+            type: object
+          type: array
+        matchings:
+          items:
+            properties:
+              duration:
+                type: number
+              distance:
+                type: number
+              weight:
+                type: number
+              geometry:
+                type: string
+              confidence:
+                type: number
+              weight_name:
+                type: string
+              legs:
+                $ref: '#/components/schemas/matchings_route_legs'
+            type: object
+          type: array
+      title: Matching
+      type: object
+    directions-matrix:
+      example:
+        distances:
+        - 0.8008281904610115
+        - 0.8008281904610115
+        code: code
+        sources:
+        - distance: 1.4658129805029452
+          name: name
+          location:
+          - 5.962133916683182
+          - 5.962133916683182
+        - distance: 1.4658129805029452
+          name: name
+          location:
+          - 5.962133916683182
+          - 5.962133916683182
+        destinations:
+        - distance: 1.4658129805029452
+          name: name
+          location:
+          - 5.962133916683182
+          - 5.962133916683182
+        - distance: 1.4658129805029452
+          name: name
+          location:
+          - 5.962133916683182
+          - 5.962133916683182
+        fallback_speed_cells:
+        - 6.027456183070403
+        - 6.027456183070403
+      properties:
+        code:
+          type: string
+        distances:
+          items:
+            type: number
+          type: array
+        fallback_speed_cells:
+          items:
+            type: number
+          type: array
+        sources:
+          items:
+            $ref: '#/components/schemas/directions_matrix_sources'
+          type: array
+        destinations:
+          items:
+            $ref: '#/components/schemas/directions_matrix_sources'
+          type: array
+      title: Matrix
+      type: object
+    directions-nearest:
+      example:
+        code: code
+        waypoints:
+        - nodes:
+          - 0.8008281904610115
+          - 0.8008281904610115
+          distance: 6.027456183070403
+          name: name
+          location:
+          - 1.4658129805029452
+          - 1.4658129805029452
+        - nodes:
+          - 0.8008281904610115
+          - 0.8008281904610115
+          distance: 6.027456183070403
+          name: name
+          location:
+          - 1.4658129805029452
+          - 1.4658129805029452
+      properties:
+        code:
+          type: string
+        waypoints:
+          items:
+            $ref: '#/components/schemas/directions_nearest_waypoints'
+          type: array
+      title: Nearest
+      type: object
+    autocomplete:
+      items:
+        properties:
+          place_id:
+            type: string
+          osm_id:
+            type: string
+          osm_type:
+            type: string
+          licence:
+            type: string
+          lat:
+            type: string
+          lon:
+            type: string
+          boundingbox:
+            items:
+              type: string
+            type: array
+          class:
+            type: string
+          type:
+            type: string
+          display_name:
+            type: string
+          display_place:
+            type: string
+          display_address:
+            type: string
+          address:
+            properties:
+              name:
+                type: string
+              house_number:
+                type: string
+              suburb:
+                type: string
+              city:
+                type: string
+              state:
+                type: string
+              postcode:
+                type: string
+              country:
+                type: string
+              country_code:
+                type: string
+            type: object
+        type: object
+      title: autocomplete
+      type: array
+    matchquality:
+      properties:
+        matchcode:
+          type: string
+        matchtype:
+          type: string
+        matchlevel:
+          type: string
+    directions_directions_routes:
+      example:
+        duration: 1.4658129805029452
+        distance: 6.027456183070403
+        legs:
+        - '{}'
+        - '{}'
+        weight_name: weight_name
+        weight: 0.8008281904610115
+        geometry: geometry
+      properties:
+        legs:
+          items:
+            properties:
+              steps:
+                items:
+                  properties:
+                    intersections:
+                      properties:
+                        out:
+                          type: number
+                        entry:
+                          type: string
+                        location:
+                          items:
+                            type: number
+                          type: array
+                        bearings:
+                          type: number
+                      type: object
+                    driving_side:
+                      type: string
+                    geometry:
+                      type: string
+                    duration:
+                      type: number
+                    distance:
+                      type: number
+                    name:
+                      type: string
+                    weight:
+                      type: number
+                    mode:
+                      type: string
+                    maneuver:
+                      items:
+                        properties:
+                          bearing_after:
+                            type: number
+                          location:
+                            items:
+                              type: number
+                            type: array
+                          type:
+                            type: string
+                          bearing_before:
+                            type: number
+                          modifier:
+                            type: string
+                          ref:
+                            type: string
+                        type: object
+                      type: array
+                  type: object
+                type: array
+              weight:
+                type: number
+              distance:
+                type: number
+              annotations:
+                properties:
+                  speed:
+                    items:
+                      type: number
+                    type: array
+                  metadata:
+                    properties:
+                      datasource_names:
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  nodes:
+                    items:
+                      type: number
+                    type: array
+                  duration:
+                    items:
+                      type: number
+                    type: array
+                  distance:
+                    items:
+                      type: number
+                    type: array
+                  weight:
+                    items:
+                      type: number
+                    type: array
+                  datasources:
+                    items:
+                      type: number
+                    type: array
+                type: object
+              summary:
+                type: string
+              duration:
+                type: string
+            type: object
+          type: array
+        weight_name:
+          type: string
+        geometry:
+          type: string
+        weight:
+          type: number
+        distance:
+          type: number
+        duration:
+          type: number
+    directions_matrix_sources:
+      example:
+        distance: 1.4658129805029452
+        name: name
+        location:
+        - 5.962133916683182
+        - 5.962133916683182
+      properties:
+        distance:
+          type: number
+        location:
+          items:
+            type: number
+          type: array
+        name:
+          type: string
+    directions_nearest_waypoints:
+      example:
+        nodes:
+        - 0.8008281904610115
+        - 0.8008281904610115
+        distance: 6.027456183070403
+        name: name
+        location:
+        - 1.4658129805029452
+        - 1.4658129805029452
+      properties:
+        nodes:
+          items:
+            type: number
+          type: array
+        distance:
+          type: number
+        location:
+          items:
+            type: number
+          type: array
+        name:
+          type: string
   securitySchemes:
     key:
       in: query

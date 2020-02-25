@@ -1,6 +1,7 @@
 # Address
 
 ## Properties
+
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **HouseNumber** | **string** |  | [optional] 

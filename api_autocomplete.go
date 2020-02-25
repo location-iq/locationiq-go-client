@@ -14,6 +14,7 @@ import (
 	_ioutil "io/ioutil"
 	_nethttp "net/http"
 	_neturl "net/url"
+	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -21,31 +22,70 @@ var (
 	_ _context.Context
 )
 
-// BalanceApiService BalanceApi service
-type BalanceApiService service
+// AutocompleteApiService AutocompleteApi service
+type AutocompleteApiService service
+
+// AutocompleteOpts Optional parameters for the method 'Autocomplete'
+type AutocompleteOpts struct {
+    Limit optional.Int32
+    Viewbox optional.String
+    Bounded optional.Int32
+    Countrycodes optional.String
+    AcceptLanguage optional.String
+    Tag optional.String
+}
 
 /*
-Balance Method for Balance
-The Balance API provides a count of request credits left in the user&#39;s account for the day. Balance is reset at midnight UTC everyday (00:00 UTC).
+Autocomplete Method for Autocomplete
+The Autocomplete API is a variant of the Search API that returns place predictions in response to an HTTP request.  The request specifies a textual search string and optional geographic bounds.  The service can be used to provide autocomplete functionality for text-based geographic searches, by returning places such as businesses, addresses and points of interest as a user types. The Autocomplete API can match on full words as well as substrings. Applications can therefore send queries as the user types, to provide on-the-fly place predictions.
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-@return Balance
+ * @param q Address to geocode
+ * @param normalizecity For responses with no city value in the address section, the next available element in this order - city_district, locality, town, borough, municipality, village, hamlet, quarter, neighbourhood - from the address section will be normalized to city. Defaults to 1 for SDKs.
+ * @param optional nil or *AutocompleteOpts - Optional Parameters:
+ * @param "Limit" (optional.Int32) -  Limit the number of returned results. Default is 10.
+ * @param "Viewbox" (optional.String) -  The preferred area to find search results.  To restrict results to those within the viewbox, use along with the bounded option. Tuple of 4 floats. Any two corner points of the box - `max_lon,max_lat,min_lon,min_lat` or `min_lon,min_lat,max_lon,max_lat` - are accepted in any order as long as they span a real box. 
+ * @param "Bounded" (optional.Int32) -  Restrict the results to only items contained with the viewbox
+ * @param "Countrycodes" (optional.String) -  Limit search to a list of countries.
+ * @param "AcceptLanguage" (optional.String) -  Preferred language order for showing search results, overrides the value specified in the Accept-Language HTTP header. Defaults to en. To use native language for the response when available, use accept-language=native
+ * @param "Tag" (optional.String) -  Restricts the autocomplete search results to elements of specific OSM class and type.  Example - To restrict results to only class place and type city: tag=place:city, To restrict the results to all of OSM class place: tag=place
+@return []map[string]interface{}
 */
-func (a *BalanceApiService) Balance(ctx _context.Context) (Balance, *_nethttp.Response, error) {
+func (a *AutocompleteApiService) Autocomplete(ctx _context.Context, q string, normalizecity int32, localVarOptionals *AutocompleteOpts) ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		localVarReturnValue  Balance
+		localVarReturnValue  []map[string]interface{}
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/balance.php"
+	localVarPath := a.client.cfg.BasePath + "/autocomplete.php"
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
+	localVarQueryParams.Add("q", parameterToString(q, ""))
+	if localVarOptionals != nil && localVarOptionals.Limit.IsSet() {
+		localVarQueryParams.Add("limit", parameterToString(localVarOptionals.Limit.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Viewbox.IsSet() {
+		localVarQueryParams.Add("viewbox", parameterToString(localVarOptionals.Viewbox.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Bounded.IsSet() {
+		localVarQueryParams.Add("bounded", parameterToString(localVarOptionals.Bounded.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Countrycodes.IsSet() {
+		localVarQueryParams.Add("countrycodes", parameterToString(localVarOptionals.Countrycodes.Value(), ""))
+	}
+	localVarQueryParams.Add("normalizecity", parameterToString(normalizecity, ""))
+	if localVarOptionals != nil && localVarOptionals.AcceptLanguage.IsSet() {
+		localVarQueryParams.Add("accept-language", parameterToString(localVarOptionals.AcceptLanguage.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Tag.IsSet() {
+		localVarQueryParams.Add("tag", parameterToString(localVarOptionals.Tag.Value(), ""))
+	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -97,7 +137,7 @@ func (a *BalanceApiService) Balance(ctx _context.Context) (Balance, *_nethttp.Re
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
-			var v Balance
+			var v []map[string]interface{}
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()

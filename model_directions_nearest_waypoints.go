@@ -8,7 +8,10 @@
  */
 
 package locationiq
-// ModelError struct for ModelError
-type ModelError struct {
-	Error string `json:"error,omitempty"`
+// DirectionsNearestWaypoints struct for DirectionsNearestWaypoints
+type DirectionsNearestWaypoints struct {
+	Nodes []float32 `json:"nodes,omitempty"`
+	Distance float32 `json:"distance,omitempty"`
+	Location []float32 `json:"location,omitempty"`
+	Name string `json:"name,omitempty"`
 }

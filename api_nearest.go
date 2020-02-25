@@ -14,6 +14,8 @@ import (
 	_ioutil "io/ioutil"
 	_nethttp "net/http"
 	_neturl "net/url"
+	"strings"
+	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -21,31 +23,69 @@ var (
 	_ _context.Context
 )
 
-// BalanceApiService BalanceApi service
-type BalanceApiService service
+// NearestApiService NearestApi service
+type NearestApiService service
+
+// NearestOpts Optional parameters for the method 'Nearest'
+type NearestOpts struct {
+    GenerateHints optional.String
+    Exclude optional.String
+    Bearings optional.String
+    Radiuses optional.String
+    Approaches optional.String
+    Number optional.Int32
+}
 
 /*
-Balance Method for Balance
-The Balance API provides a count of request credits left in the user&#39;s account for the day. Balance is reset at midnight UTC everyday (00:00 UTC).
+Nearest Nearest Service
+Snaps a coordinate to the street network and returns the nearest n matches. Where coordinates only supports a single {longitude},{latitude} entry.
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-@return Balance
+ * @param coordinates String of format {longitude},{latitude};{longitude},{latitude}[;{longitude},{latitude} ...] or polyline({polyline}) or polyline6({polyline6}). polyline follows Google's polyline format with precision 5
+ * @param optional nil or *NearestOpts - Optional Parameters:
+ * @param "GenerateHints" (optional.String) -  Adds a Hint to the response which can be used in subsequent requests, see hints parameter. Input Value - true (default), false Format - Base64 String
+ * @param "Exclude" (optional.String) -  Additive list of classes to avoid, order does not matter. input Value - {class}[,{class}] Format - A class name determined by the profile or none.
+ * @param "Bearings" (optional.String) -  Limits the search to segments with given bearing in degrees towards true north in clockwise direction. List of positive integer pairs separated by semi-colon and bearings array should be equal to length of coordinate array. Input Value :- {bearing};{bearing}[;{bearing} ...] Bearing follows the following format : bearing {value},{range} integer 0 .. 360,integer 0 .. 180
+ * @param "Radiuses" (optional.String) -  Limits the search to given radius in meters Radiuses array length should be same as coordinates array, eaach value separated by semi-colon. Input Value - {radius};{radius}[;{radius} ...] Radius has following format :- double >= 0 or unlimited (default)
+ * @param "Approaches" (optional.String) -  Keep waypoints on curb side. Input Value - {approach};{approach}[;{approach} ...] Format - curb or unrestricted (default)
+ * @param "Number" (optional.Int32) -  Number of nearest segments that should be returned. [ integer >= 1 (default 1) ]
+@return DirectionsNearest
 */
-func (a *BalanceApiService) Balance(ctx _context.Context) (Balance, *_nethttp.Response, error) {
+func (a *NearestApiService) Nearest(ctx _context.Context, coordinates string, localVarOptionals *NearestOpts) (DirectionsNearest, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		localVarReturnValue  Balance
+		localVarReturnValue  DirectionsNearest
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/balance.php"
+	localVarPath := a.client.cfg.BasePath + "/nearest/driving/{coordinates}"
+	localVarPath = strings.Replace(localVarPath, "{"+"coordinates"+"}", _neturl.QueryEscape(parameterToString(coordinates, "")) , -1)
+
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
+	if localVarOptionals != nil && localVarOptionals.GenerateHints.IsSet() {
+		localVarQueryParams.Add("generate_hints", parameterToString(localVarOptionals.GenerateHints.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Exclude.IsSet() {
+		localVarQueryParams.Add("exclude", parameterToString(localVarOptionals.Exclude.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Bearings.IsSet() {
+		localVarQueryParams.Add("bearings", parameterToString(localVarOptionals.Bearings.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Radiuses.IsSet() {
+		localVarQueryParams.Add("radiuses", parameterToString(localVarOptionals.Radiuses.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Approaches.IsSet() {
+		localVarQueryParams.Add("approaches", parameterToString(localVarOptionals.Approaches.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Number.IsSet() {
+		localVarQueryParams.Add("number", parameterToString(localVarOptionals.Number.Value(), ""))
+	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -97,7 +137,7 @@ func (a *BalanceApiService) Balance(ctx _context.Context) (Balance, *_nethttp.Re
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
-			var v Balance
+			var v DirectionsNearest
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()

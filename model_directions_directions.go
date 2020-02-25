@@ -8,7 +8,9 @@
  */
 
 package locationiq
-// ModelError struct for ModelError
-type ModelError struct {
-	Error string `json:"error,omitempty"`
+// DirectionsDirections struct for DirectionsDirections
+type DirectionsDirections struct {
+	Code string `json:"code,omitempty"`
+	Waypoints []map[string]interface{} `json:"waypoints,omitempty"`
+	Routes []DirectionsDirectionsRoutes `json:"routes,omitempty"`
 }
